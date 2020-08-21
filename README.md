@@ -34,6 +34,15 @@ client.subject = 'Mail subject'
 client.text = 'Mail body'
 ```
 
+### Attach file(s)
+
+```ruby
+# File path by sting
+client.attachments << "./Rakefile"
+# File object
+client.attachments << open("./test.rb")
+```
+
 ### Send email
 
 ```ruby

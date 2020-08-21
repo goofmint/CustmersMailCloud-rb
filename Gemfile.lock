@@ -7,6 +7,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.4.4)
+    mime-types (3.3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2020.0512)
+    multipart-post (2.1.1)
     rake (12.3.3)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -27,6 +31,8 @@ PLATFORMS
 
 DEPENDENCIES
   customers_mail_cloud!
+  mime-types
+  multipart-post
   rake (~> 12.0)
   rspec (~> 3.0)
 

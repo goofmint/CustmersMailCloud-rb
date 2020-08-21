@@ -1,5 +1,7 @@
 require "net/http"
 require "json"
+require "net/http/post/multipart"
+require 'mime/types'
 
 module CustomersMailCloud
   class Client
@@ -55,9 +57,29 @@ module CustomersMailCloud
         'Accept': 'application/json'
       }
       uri = URI.parse(@url)
-      http = Net::HTTP.new(uri.host, uri.port)
+      if @attachments.size > 0
+        params[:attachments] = @attachments.size
+        [:to, :from].each do |k|
+          params[k] = params[k].to_json
+        end
+        @attachments.each_with_index do |a, i|
+          if a.is_a? String
+            a = File.new(a)
+          end
+          mimeType = MIME::Types.type_for(a.path)[0]
+          params["attachment#{i + 1}"] = UploadIO.new a, mimeType ? mimeType.to_s : 'application/octet-stream', File.basename(a)
+        end
+        req = Net::HTTP::Post::Multipart.new(uri.path, params)
+      else
+        req = Net::HTTP::Post.new(uri.path)
+        req.body = params.to_json
+        headers.each do |k, v|
+          req[k] = v
+        end
+      end
+      http = Net::HTTP.new uri.host, uri.port
       http.use_ssl = true
-      response = http.post(uri.path, params.to_json, headers)
+      response = http.request req
       if response.code == "200"
         return JSON.parse response.body
       else
