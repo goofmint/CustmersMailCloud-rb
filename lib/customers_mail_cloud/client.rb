@@ -36,6 +36,18 @@ module CustomersMailCloud
       @url = @endpoints[:pro].gsub('SUBDOMAIN', subdomain)
     end
 
+    def bounce
+      Transaction.new 'bounces', self
+    end
+
+    def delivery
+      Transaction.new 'deliveries', self
+    end
+
+    def block
+      Transaction.new 'blocks', self
+    end
+
     def send
       raise Error.new '契約プランを選択してください（trial/standard/pro）' if @url == nil || @url == ''
       raise Error.new '送信元アドレスは必須です' if @from == nil

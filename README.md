@@ -49,6 +49,28 @@ client.attachments << open("./test.rb")
 json = client.send
 ```
 
+## Get Transaction
+
+### Get bounce
+
+```ruby
+bounce = @client.bounce
+bounce.server_composition = 'sandbox'
+bounce.start_date = Date.parse("2020-11-20")
+bounce.limit = 100
+bounce.list
+```
+
+### Get delivery
+
+```ruby
+delivery = @client.bounce
+delivery.server_composition = 'sandbox'
+delivery.date = Date.parse("2020-11-20")
+delivery.limit = 100
+delivery.list
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/customers_mail_cloud. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/customers_mail_cloud/blob/master/CODE_OF_CONDUCT.md).

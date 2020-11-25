@@ -1,4 +1,6 @@
 require "json"
+require "date"
+
 RSpec.describe CustomersMailCloud do
   before "setup" do
     config = JSON.parse(open("./config.json").read)
@@ -29,5 +31,13 @@ RSpec.describe CustomersMailCloud do
     rescue => e
       expect(e.message).to eq "メール本文は必須です"
     end
+  end
+
+  it "Get bounce test" do
+    bounce = @client.bounce
+    bounce.server_composition = 'sandbox'
+    bounce.start_date = Date.parse("2020-11-20")
+    bounce.limit = 100
+    bounce.list
   end
 end
