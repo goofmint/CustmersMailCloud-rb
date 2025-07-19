@@ -19,10 +19,14 @@ module CustomersMailCloud
       @subject = ''
       @text = ''
       @html = ''
+      @envfrom = nil
+      @replyto = nil
+      @headers = {}
+      @charset = 'UTF-8'
       @attachments = []
     end
     attr_accessor :api_user, :api_key, :to, :from,
-                  :subject, :text, :html, :attachments
+                  :subject, :text, :html, :envfrom, :replyto, :headers, :charset, :attachments
     def trial
       @url = @endpoints[:trial]
     end
@@ -63,7 +67,11 @@ module CustomersMailCloud
         subject: @subject,
         text: @text
       }
-      params.html = @html if self.html != ''
+      params[:envfrom] = @envfrom if @envfrom
+      params[:replyto] = @replyto if @replyto
+      params[:headers] = @headers if @headers.size > 0
+      params[:charset] = @charset if @charset != 'UTF-8'
+      params[:html] = @html if @html != ''
       headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
