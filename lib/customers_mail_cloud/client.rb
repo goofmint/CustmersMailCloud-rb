@@ -19,8 +19,8 @@ module CustomersMailCloud
       @subject = ''
       @text = ''
       @html = ''
-      @envfrom = nil
-      @replyto = nil
+      @env_from = nil
+      @reply_to = nil
       @headers = {}
       @charset = 'UTF-8'
       @attachments = []
@@ -67,10 +67,14 @@ module CustomersMailCloud
         subject: @subject,
         text: @text
       }
-      params[:envfrom] = @envfrom if @envfrom
-      params[:replyto] = @replyto if @replyto
-      params[:headers] = @headers if @headers.size > 0
-      params[:charset] = @charset if @charset != 'UTF-8'
+      params[:envfrom] = @env_from if @env_from
+      params[:replyto] = @reply_to.to_h if @reply_to
+      if (@headers.empty?)
+        params[:headers] = @headers.map do |key, value|
+          { name: key, value: value }
+        end
+      end
+      params[:charset] = @charset
       params[:html] = @html if @html != ''
       headers = {
         'Content-Type': 'application/json',
